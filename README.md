@@ -1,7 +1,7 @@
 $UV Monochromator API
 ========
 
-$UV Monochromator API will send commands to the devices connected for movements, taking images, and measurements.
+UV Monochromator API will send commands to the devices connected for movements, taking images, and measurements.
 
 Use command.py to enter and run commands, all function libraries should be imported at the beginnng of the file.
 To test that RS232 connection is working for communication between your computer and the Scan Controller, run pt.get_port_database(path="port_database.csv"). You will need to check the serial ports on your computer for the correct port number each device is connected to.
