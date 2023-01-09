@@ -1,0 +1,6 @@
+,Port_Alias,Port_SN,Port_Name
+0,MCPort,A6040X2D,/dev/ttyUSB2
+1,FWPort,A6040W3Z,/dev/ttyUSB3
+2,ShutPort,A65892C1,/dev/ttyUSB0
+3,PicoPort,A65893GG,/dev/ttyUSB4
+4,Turbo,A67166PW,/dev/ttyUSB4

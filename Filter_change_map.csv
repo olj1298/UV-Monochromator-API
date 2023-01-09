@@ -1,0 +1,6 @@
+,filternum,start_wavelength,stop_wavelength
+0,1,110,180
+1,2,190,250
+2,3,250,385
+3,4,,550
+4,5,365,550
