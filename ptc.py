@@ -32,21 +32,21 @@ def run_ptc(lamp='D2',wl=0,filtnum=1):
         ::Updates on images taken and output of log data
         ::Error message if code reaches an exception"""
     try:
-        data_dir = nuvu.getpath()
+        data_dir = nuvu.getpath() #directs data created to folder on computer
         print(f'The current working directory is {data_dir}')
-        val = input("Is this the correct data directory? Y or N")
-        if val == 'Y': ##Need to enter the response with 'Y'
+        val = input("Is this the correct data directory? Y or N") #query user for folder location verification
+        if val == 'Y': #Need to enter the response with 'Y'
             pass
         else:
             print('Please set the correct directory path.')
             exit()
-        log = logging.getLogger("application")
+        log = logging.getLogger("application") #run logging details for measurement
         if not getattr(log, 'handler_set', None):
             sh = logging.StreamHandler()
-            formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "", "%")
+            formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "", "%") #save computer time data taken and relevant tags
             sh.setFormatter(formatter)
             log.addHandler(sh)
-            logfilename=data_dir+'ptc_log.txt'
+            logfilename=data_dir+'ptc_log.txt' 
             log.addHandler(logging.FileHandler(logfilename))
             log.setLevel(logging.INFO)
             log.info("Starting PTC data collection ")
@@ -64,30 +64,30 @@ def run_ptc(lamp='D2',wl=0,filtnum=1):
         else:
             writeheader = False
             log.info("Log file exits in this folder.")
-            exptime=[0.010,0.20,0.025,0.050,0.075,0.1,0.2,0.25,0.5,0.75,1,2,3,5,7.5,10,20,30,40,50,60,70,80,90,100,120,140,160,180,200,250,300] #exp in seconds
+            exptime=[0.010,0.20,0.025,0.050,0.075,0.1,0.2,0.25,0.5,0.75,1,2,3,5,7.5,10,20,30,40,50,60,70,80,90,100,120,140,160,180,200,250,300] #in seconds
             log.info(f'exptime list: {exptime}')
-            filtnum=fw.set_fw_to_position(filtnum,FWPort)
+            filtnum=fw.set_fw_to_position(filtnum,FWPort) #confirm with filter list that current filter is correct
             log.info(f'filter wheel set to {filtnum}')
             log.info('Entering loop for taking exposures')
         for idx,et in enumerate(exptime):
             t1 = datetime.datetime.now()
             log.info(f'Exposure time is set for {et} seconds')
             log.info(f'Taking pre-bias')
-            imno = nuvu.getimno()
-            time.sleep(0.2)
-            imtype='Bias'
-            if idx==0: 
-                log_df=pd.DataFrame(nuvu.get_log_data(imtype,et,imno,wl,lamp,filtnum))
+            imno = nuvu.getimno() #collect image number
+            time.sleep(0.2) #in seconds
+            imtype='Bias' #add flag to file header
+            if idx==0: #for first item in list
+                log_df=pd.DataFrame(nuvu.get_log_data(imtype,et,imno,wl,lamp,filtnum)) #set dataframe
             else: 
-                temp_df=pd.DataFrame(nuvu.get_log_data(imtype,et,imno,wl,lamp,filtnum))
-                log_df=pd.concat([log_df,temp_df],ignore_index=True)
+                temp_df=pd.DataFrame(nuvu.get_log_data(imtype,et,imno,wl,lamp,filtnum)) #set temperature dataframe
+                log_df=pd.concat([log_df,temp_df],ignore_index=True) #add together
             nuvu.bias()
-            time.sleep(0.2)
+            time.sleep(0.2) #s
 
             log.info(f'Taking pre-dark')
             imno = nuvu.getimno()
-            time.sleep(0.2)
-            imtype='Dark'
+            time.sleep(0.2)#
+            imtype='Dark' #add flag to file header
             temp_df=pd.DataFrame(nuvu.get_log_data(imtype,et,imno,wl,lamp,filtnum))
             log_df=pd.concat([log_df,temp_df],ignore_index=True)
             nuvu.dark(et)
@@ -95,7 +95,7 @@ def run_ptc(lamp='D2',wl=0,filtnum=1):
 
             log.info(f'Taking First Flat Exposures')
             imno = nuvu.getimno()    
-            time.sleep(0.2)
+            time.sleep(0.2) #s
             imtype='Flat'
             temp_df=pd.DataFrame(nuvu.get_log_data(imtype,et,imno,wl,lamp,filtnum))
             log_df=pd.concat([log_df,temp_df],ignore_index=True)
@@ -128,8 +128,7 @@ def run_ptc(lamp='D2',wl=0,filtnum=1):
             nuvu.bias()
             time.sleep(0.2)
 
-            t2 = datetime.datetime.now()
-            #et = int(et/2)
+            t2 = datetime.datetime.now() #save end time of data run
             log.info(f"Exp {idx}, exptime {et} ended at {t2}")
             log.info(f'This exposure took {t2-t1} seconds')
         t3 = datetime.datetime.now()
@@ -138,15 +137,14 @@ def run_ptc(lamp='D2',wl=0,filtnum=1):
         log_df.to_csv(fn)
         log.info(f'Images saved in {data_dir}')
         log.info(f'Scan complete. See scan log in {logfilename}')
-        #led(0)
-        # print(f'Total script time is {t3-t0} seconds')
     except Exception as ex:
         msg =f"Data Could Not Be Taken. Error Code: {ex}"
-        return 
+        return msg
+    
     def main(): 
-        wl=460
+        wl=460 #first wavelength in test
         mcapi.go_to_fromhome(MCPort,wl)
-        run_ptc(wl=wl,filtnum=1)
+        run_ptc(wl=wl,filtnum=1) 
 
     if __name__=="__main__":
         main()
