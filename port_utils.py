@@ -32,7 +32,7 @@ def update_port_databse(path="port_database.csv"):
                 found=1
                 break
         if found ==0: 
-            print("Device not found. Leaving the locacl port to default value.")
+            print("Device not found. Leaving the local port to default value.")
     path=path
     port_database.to_csv(path)
     return port_database

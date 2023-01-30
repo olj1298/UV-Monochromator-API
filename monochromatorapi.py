@@ -10,9 +10,8 @@ import sys
 from yaml import scan
 import port_utils as pt
 
-"""
-Module docstring
-"""
+"""Commands for McPherson 789-A Scan Controller movement and status"""
+
 def whereishome(): 
     """Returns the home wavelength for the monochrmator for use in movement.
     Inputs: 
@@ -113,6 +112,11 @@ def home(MCPort):
                             bytesize = serial.EIGHTBITS, #per 789A-4 manual. Number of data bits in transmission
                             )      
         ser.close() #close open ser connection
+        ser.open()
+        ser.write(b'+72000 \r'); #increase wavelength for 2 motor revolutions to prevent power switch issue seen during testing
+        #Issue: when already at home and home command run, would scan continously until stop command given
+        ser.read_until(size=None)
+        ser.close()
         ser.open() #open ser conection for write command
         ser.write(b'A8 \r'); #ASCII key enables home circuit to configure to home wavelength sent as byte
         ser.close() #close to prevent error
@@ -124,7 +128,7 @@ def home(MCPort):
             ser.write(b'm-23000 \r'); #move at constant vel. of 23KHz decreasing wavelength
             ser.read_until(size=None)
             ser.close()
-            print("decreasing wavelength at 23KHz") #number of mircosteps/sec
+            print("decreasing wavelength at 23KHz rate") #number of mircosteps/sec
             while statnow < 32: #once scan passes home statnow should switch to 34
                 statnow,msg = checkstatus(MCPort,waittime=1)
                 print(msg)
@@ -186,13 +190,13 @@ def home(MCPort):
                     #removes backlash
                     time.sleep(0.8)    
                     ser.open()
-                    ser.write(b'-108000 \r'); #decreasing wavelength for 3 motor revolutions
+                    ser.write(b'-108000 \r'); #decreasing wavelength for 3 motor revolutions or 12nm
                     ser.read_until(size=None)
                     ser.close()
                     print(f"decrease wavelength for 3 revolutions")
                     time.sleep(3) #time to complete backlash movement before next command
                     ser.open()
-                    ser.write(b'+72000 \r'); #increase wavelength for 2 motor revolutions
+                    ser.write(b'+72000 \r'); #increase wavelength for 2 motor revolutions or 8nm
                     ser.read_until(size=None)
                     ser.close()
                     print(f"increase wavelength for 2 revolutions")
@@ -203,7 +207,7 @@ def home(MCPort):
                     ser.close()
                     print(f"high accuracy circuit enabled")
                     ser.open()
-                    ser.write(b'F4500,0 \r'); #find edge of home flag at 4500 steps/sec
+                    ser.write(b'F4500,0 \r'); #find edge of home flag at 4500 microsteps/sec
                     ser.read_until(size=None)
                     ser.close()
                     print(f"finding edge of home flag at 4500KHz, this will take about 12 seconds")

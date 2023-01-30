@@ -9,12 +9,12 @@ import os
 import sys
 import pyvisa as visa
 import monochromatorapi as mcapi
-import shutterapi as shutter
-import pixisapi as pixis
-import fwapi as fw
-import PhotodiodeLinux as mclinux
+#import shutterapi as shutter
+#import pixisapi as pixis
+#import fwapi as fw
+#import PhotodiodeLinux as mclinux
 import port_utils as pt
-import nuvu as nuvu
+#import nuvu as nuvu
 import clr # Import the .NET class library
 import sys # Import python sys module
 import os # Import os module
@@ -69,9 +69,10 @@ interval=0.1 #rate of samples for picoameter to take
 #mclinux.savefile(Lamp,slitsize,start_wl,end_wl) #create savefile location in directory with experiment values for easier use after measurements
 #mclinux.MC_run_exp() #takes predarks, picoameter readings, post darks and changes filter wheel and changes shutter when needed. saves data in directory for later analysis
 #mcapi.go_to_from(MCPort,631.26,640)
-pt.setports()
+#pt.setports()
 #pt.get_port_database(path="port_database.csv")
-#mcapi.home(MCPort)
+mcapi.home(MCPort)
+#mcapi.stop(MCPort)
 
 """NUVU experiment function settings"""
 # For adding the date of experiment to the filename
@@ -85,13 +86,13 @@ pt.setports()
 #exp_filenames_basename_dark=exp_filenames_basename+'_dark'
 #exp_directory=mclinux.picoa_set_folder(exp_folder_name,parent_directory)
 #nuvu.run_ptc(wl=wl,filtnum=1)
-#wl_min = 150
-#wl_max=420
-#exp_time=40
-#step=10
-#nburst=1
+#wl_min = 150 #nm
+#wl_max=420 #nm
+#exp_time=40 #s
+#step=10 #nm
+#nburst=1 
 #flist=[1,2,3]
-#lamp='D2'
+#lamp='D2' #Xe=Xenon, D2=Deuterium
 #Ch1ON=1 #Channel 1 ON
 #Ch2ON=1 #Channel 2 ON 
 #nsamples=10 #previously 100 

@@ -9,19 +9,19 @@ The first movement before running any experiment should be the mcapi.home(MCPort
 
 Features
 --------
-This software can home, check the limit status, movement status, set scanning parameters, stop and move the controller at user given range and interval with pauses for exposure times. It can also communicate with the NUVU camera to take dark, bias and science images at various exposure times.Written for integration with the McPherson 798-A Scan Controller, NUVU camera, shutter, filter wheel, Keithly 6482 Picoammeter and PIXIS 1024B camera.
+This software can home, check the limit status, movement status, set scanning parameters, stop and move the controller at user given range and interval with pauses for exposure times. It can also communicate with the NUVU controller server to take dark, bias and science images at various exposure times. Written for integration with the McPherson 798-A Scan Controller, NUVU contoller, VCM-D1 Shutter Driver, McPherson 648 Filter Wheel and McPherson 747 Device Controller, Keithly 6482 Picoammeter and PIXIS 1024B camera.
 
 Installation
 ------------
-Download 798-A Scan Controller Application and drivers from McPherson.com
-libraries to install in your Python instance: pyserial,pyvisa,pandas,numpy,
+Download 798-A Scan Controller Application and drivers as well as drivers for Filter Wheel from McPherson.com
+libraries to install in your Python instance: pyserial,pyvisa,pandas,numpy
 Lightfield software for PIXIS
 
 Contribute
 ----------
 
-- Issue Tracker: https://github.com/aafaquerk/UV-Monochromator-control/issues
-- Source Code: https://github.com/aafaquerk/UV-Monochromator-control
+- Issue Tracker: https://github.com/olj1298/UV-Monochromator-API/issues
+- Source Code: https://github.com/olj1298/UV-Monochromator-API
 
 Support
 -------

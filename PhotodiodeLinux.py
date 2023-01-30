@@ -16,11 +16,13 @@ import port_utils as pt
 import command
 import clr # Import the .NET class library
 
+"""Comands for Keithley 6482 Picoammeter. Uses variables in command.py and port_utils.py."""
+
 def picoammeter_initialize(Ch1ON=1,Ch2ON=1,interval=0.1,nsamples=50,asrl="asrl5::instr",debug=False):
         """Sets channel number, range limits, instrument address, and serial port settings for picoameter.
         Inputs:
-                :Ch1ON(integer): 0 = off, 1 = on
-                :Ch2ON(integer): 0 = off, 1 = on
+                :Ch1ON(integer): 0=off, 1=on
+                :Ch2ON(integer): 0=off, 1=on
                 :interval(float): separation between samples
                 :nsamples(integer): number of samples taken
                 :asrl(string): address of picoammeter
@@ -271,7 +273,7 @@ def savefile(Lamp,slitsize,start_wl,end_wl):
         print(msg)
         return 
 
-def MC_run_exp():
+def MC_run_exp(): #move to different file? 
     """Runs experiment.
     Inputs:
         :Ch1ON(string): 1 = on, 0 = off

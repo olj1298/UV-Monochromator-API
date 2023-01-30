@@ -18,14 +18,19 @@ import time
 import codecs
 import serial
 
+"""McPherson 747 Filter Wheel Controller commands using variables stored in command.py"""
+
 def update_filter_change_map(list=[240,350,500,605,700]):
     """"Given the list of wavelenghts where the filter need to be changed. This function generates a map and stores it in csv.
     Inputs:
-        :list(array): wavelength which filters cutoff"""
+        :list(array): wavelength which filters cutoff
+    Returns:
+        ::updated filter map
+        ::error message if filter wheel not connecting to computer"""
     try:
-        FW_change_map= {'filternum':[1,2,3,4,5],'Change_Wavelength':list}
-        FW_change_map_df=pd.DataFrame(FW_change_map)
-        FW_change_map_df.to_csv("Filter_change_map.csv")
+        FW_change_map= {'filternum':[1,2,3,4,5],'Change_Wavelength':list} #add integer for filter slot corresponding to wavelength
+        FW_change_map_df=pd.DataFrame(FW_change_map) #use pandas to acces file
+        FW_change_map_df.to_csv("Filter_change_map.csv") #convert to .csv
         print("Updated filter map!")
     except Exception as ex:
         msg =f"Error, could not update filter change map. Error: {ex}"
@@ -84,7 +89,7 @@ def set_fw_to_position(filternum,FWPort):
             curpos=get_fw_position(FWPort) #read filter wheel position
             print(f"Currently at {curpos}")
             time.sleep(3) #time for device to read and respond
-        if int(curpos)==filternum: 
+        if int(curpos)==filternum: #check if current wavelength matches filter range
             print(f"Now at position {curpos}") 
             return int(curpos)
     except Exception as ex:
@@ -102,7 +107,7 @@ def connect_FW(FWPort):
         ::Error message if exception occured"""
     try:
         #serial communication settings. port variable may be changed depending on computer connected, but other settings must stay the same
-        ser = serial.Serial(port=shutterport, #string variable in command.py for shutter serial connection
+        ser = serial.Serial(port=FWPort, #string variable in command.py for shutter serial connection
                             baudrate = 9600, #per FW manual. bits/sec
                             timeout = None, #per FW manual. Add time when sending or recieveing transmissions
                             xonxoff = True, #per FW manual. Software flow control between computer and device

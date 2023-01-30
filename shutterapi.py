@@ -1,5 +1,8 @@
 import serial
 import port_utils as pt
+import command
+
+"""VCM D1 Shutter Controller commands for opening and closing shutter. Uses variables in command.py and port_utils.py."""
 
 def shutopen(shutterport):
     """
